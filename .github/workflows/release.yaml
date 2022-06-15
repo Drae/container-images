@@ -116,7 +116,7 @@ jobs:
 
       - name: PrepareReg Names
         run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
           echo IMAGE_TAG=$(echo ${{ github.ref }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_ENV
 
       # Install and configure Buildx
@@ -132,9 +132,9 @@ jobs:
       #      uses: actions/cache@v3
       #      with:
       #        path: /tmp/.buildx-cache
-      #        key: ${{ secrets.DOCKER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}
+      #        key: ${{ secrets.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}
       #        restore-keys: |
-      #          ${{ secrets.DOCKER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}
+      #          ${{ secrets.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}
 
       # Install the GOSS testing framework
       - name: Set up goss/dgoss
@@ -155,7 +155,7 @@ jobs:
           file: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/Dockerfile
           load: true
           tags: |
-            ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}:test
+            ghcr.io/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}:test
           cache-from: ${{ steps.prep.outputs.cache_from }}
           cache-to: ${{ steps.prep.outputs.cache_to }}
 
@@ -165,7 +165,7 @@ jobs:
         env:
           GOSS_FILE: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/goss.yaml
         run: |
-          dgoss run ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}:test
+          dgoss run ghcr.io/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}:test
 
       # Push if not a PR, otherwise just test the build process for all requested platforms
       - name: Build and Push
@@ -179,7 +179,7 @@ jobs:
           file: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/Dockerfile
           push: ${{ steps.prep.outputs.push }}
           tags: |
-            ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}:latest
-            ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ matrix.container }}:v${{ steps.prep.outputs.version }}
+            ghcr.io/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}:latest
+            ghcr.io/${{ env.IMAGE_REPO_OWNER }}/${{ matrix.container }}:v${{ steps.prep.outputs.version }}
           cache-from: ${{ steps.prep.outputs.cache_from }}
           cache-to: ${{ steps.prep.outputs.cache_to }}
