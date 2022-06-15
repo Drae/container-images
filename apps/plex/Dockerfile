@@ -1,5 +1,5 @@
 # hadolint ignore=DL3007
-FROM ghcr.io/k8s-at-home/ubuntu:latest
+FROM ghcr.io/k8s-at-home/ubuntu:vfocal-20220426
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
