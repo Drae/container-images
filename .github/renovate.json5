@@ -1,3 +1,10 @@
 {
-  "extends": ["config:base", ":dependencyDashboard"]
+  extends: ["config:base", ":dependencyDashboard"],
+  packageRules: [
+    {
+      matchDatasources: ["docker", "github-releases"],
+      semanticCommitType: "feat(update)",
+      versioning: "regex:^(?<compatibility>[a-z]+?)-(?<minor>\\d+)?$",
+    },
+  ],
 }
