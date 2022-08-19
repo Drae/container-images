@@ -1,11 +1,9 @@
 # hadolint ignore=DL3007
-FROM ghcr.io/k8s-at-home/ubuntu:vfocal-20220426
+FROM ghcr.io/onedr0p/ubuntu:rolling@sha256:20a8c81c8e14100ca6122ff238362926ed7b3085060f1b5454ecebcf9fd4580d
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG VERSION
-
-USER root
 
 ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
   PLEX_DOWNLOAD="https://downloads.plex.tv/plex-media-server-new" \
